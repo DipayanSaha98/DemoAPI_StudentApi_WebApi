@@ -11,5 +11,6 @@ namespace DemoAPI.Data
         }
 
         public DbSet<StudentEntity> StudentRegister { get; set; }
+        public DbSet<LocalUser> LocalUsers { get; set; } 
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Azure;
 using DemoAPI.Data;
 using DemoAPI.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,12 +22,14 @@ namespace DemoAPI.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public List<StudentEntity> GetAllStudents()                                           // StudentEntity is model class name
         {                                                                                     // StudentRegister is database Table name 
             _logger.LogInformation("Fetching All Student List");
             return _db.StudentRegister.ToList();
         }
         [HttpGet("GetStudentsById")]
+        [Authorize]
         public ActionResult<StudentEntity> GetStudentDetails(Int32 Id)
         {
             if (Id == 0) { 
@@ -41,6 +44,7 @@ namespace DemoAPI.Controllers
 
 
         [HttpPost("AddStudent")]
+        [Authorize]
         public ActionResult<StudentEntity> AddStudent([FromBody] StudentEntity studentDetails)
         {
             if (!ModelState.IsValid) { return BadRequest(ModelState); }        // status code : 400
@@ -50,6 +54,7 @@ namespace DemoAPI.Controllers
             return Ok(studentDetails);                                          // status code : 200
         }
         [HttpPost("UpdateStudentDetails")]
+        [Authorize]
         public ActionResult<StudentEntity> UpdateStudent(Int32 Id, [FromBody] StudentEntity studentDetails)
         {
             if (studentDetails == null) { return BadRequest(studentDetails); }                       // status code : 400
@@ -70,6 +75,7 @@ namespace DemoAPI.Controllers
         
         
         [HttpPut("DeleteStudent")]
+        [Authorize(Roles = "Admin")]
         public ActionResult<StudentEntity> Delete(Int32 Id) 
         {
             var StudentDetails = _db.StudentRegister.FirstOrDefault(x => x.Id == Id);
