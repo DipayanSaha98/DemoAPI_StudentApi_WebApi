@@ -1,0 +1,75 @@
+﻿@model StudentEntity
+
+
+<form asp-action="CreateStudent" method="post">
+    <br />
+    <div class="container border p-3">
+        <h1 class="text-primary"> New Students Details</h1>
+
+        <hr/>
+        <div class="row">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col-2">
+                <label asp-for="Name" class="control-label pt-2" style="font-size:14px;"></label>
+            </div>
+
+            <div class="col-10 pb-3">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="col-2">
+                <label asp-for="Age" class="control-label pt-2" style="font-size:14px;"></label>
+            </div>
+
+            <div class="col-10 pb-3">
+                <input asp-for="Age" class="form-control" />
+                <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+
+            <div class="col-2">
+                <label asp-for="Standard" class="control-label pt-2" style="font-size:14px;"></label>
+            </div>
+
+            <div class="col-10 pb-3">
+                <input asp-for="Standard" class="form-control" />
+                <span asp-validation-for="Standard" class="text-danger"></span>
+            </div>
+
+            <div class="col-2">
+                <label asp-for="EmailAddress" class="control-label pt-2" style="font-size:14px;"></label>
+            </div>
+
+            <div class="col-10 pb-3">
+                <input asp-for="EmailAddress" class="form-control" />
+                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+            </div>
+
+            <br />
+
+            <div class="col-5 offset-2">
+                <input type="submit" value="Submit" class="btn btn-success form-control" />
+            </div>
+            <div class="col-5 ">
+            <a asp-action="Index" asp-controller="Students" class="btn btn-primary form-control">Back to List</a>
+            </div>
+
+            
+        </div>
+    </div>
+
+</form>
+
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+
+
+
+
+
+
+

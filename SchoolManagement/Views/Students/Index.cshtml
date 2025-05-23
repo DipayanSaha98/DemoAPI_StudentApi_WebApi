@@ -1,0 +1,46 @@
+﻿@model List<StudentEntity>
+<br/>
+<div class="container p-4 border">
+    <div class="row pb-2">
+        <div class="col">
+            <h1 class="text-primary">Students</h1>
+        </div>
+
+        <div class="col text-end p1-1">
+            <a asp-controller="Students" asp-action="Create" class="btn btn-primary">New Student</a>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Standard</th>
+                <th>Email</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Age</td>
+                    <td>@item.Standard</td>
+                    <td>@item.EmailAddress</td>
+                    <td>
+                        @* Details will work as an Update  *@
+                        <a asp-controller="Students" asp-action="Details" asp-route-Id="@item.Id"   
+                         class="btn btn-primary">Details</a>
+
+                        <a asp-controller="Students" asp-action="Delete" asp-route-Id="@item.Id"
+                           class="btn btn-primary">Delete</a>
+
+                    </td>
+                </tr>    
+            }
+        </tbody>
+    </table>
+</div>

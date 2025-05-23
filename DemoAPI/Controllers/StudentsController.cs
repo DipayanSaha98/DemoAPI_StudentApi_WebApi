@@ -40,7 +40,7 @@ namespace DemoAPI.Controllers
 
 
 
-        [HttpPost]
+        [HttpPost("AddStudent")]
         public ActionResult<StudentEntity> AddStudent([FromBody] StudentEntity studentDetails)
         {
             if (!ModelState.IsValid) { return BadRequest(ModelState); }        // status code : 400
@@ -68,9 +68,9 @@ namespace DemoAPI.Controllers
 
 
         
-        [HttpDelete("DeleteStudent")]
-        //[HttpPut("DeleteStudent")]
-        public ActionResult<StudentEntity> DeleteStudent(Int32 Id) 
+        
+        [HttpPut("DeleteStudent")]
+        public ActionResult<StudentEntity> Delete(Int32 Id) 
         {
             var StudentDetails = _db.StudentRegister.FirstOrDefault(x => x.Id == Id);
             if (StudentDetails == null) { return NotFound(); }
@@ -78,6 +78,20 @@ namespace DemoAPI.Controllers
             _db.SaveChanges();
             return NoContent();                                              // status code : 204  
         }
+
+
+        //---------------------------------------------------------------------------------------------------------------------------
+
+        [HttpDelete("DeletEStudent")]
+        public ActionResult<StudentEntity> DeletEStudent(Int32 Id)
+        {
+            var StudentDetails = _db.StudentRegister.FirstOrDefault(x => x.Id == Id);
+            if (StudentDetails == null) { return NotFound(); }
+            _db.Remove(StudentDetails);
+            _db.SaveChanges();
+            return NoContent();                                              // status code : 204  
+        }
+
 
 
         //  PATCH METHOD (partial/conditional update)
