@@ -23,6 +23,8 @@ namespace DemoAPI.Controllers
 
         [HttpGet]
         [Authorize]
+        //[ResponseCache(Duration = 30)]   
+        [ResponseCache(CacheProfileName = "apiCache30")] 
         public List<StudentEntity> GetAllStudents()                                           // StudentEntity is model class name
         {                                                                                     // StudentRegister is database Table name 
             _logger.LogInformation("Fetching All Student List");
@@ -30,6 +32,7 @@ namespace DemoAPI.Controllers
         }
         [HttpGet("GetStudentsById")]
         [Authorize]
+        [ResponseCache(CacheProfileName = "apiCache30")]
         public ActionResult<StudentEntity> GetStudentDetails(Int32 Id)
         {
             if (Id == 0) { 

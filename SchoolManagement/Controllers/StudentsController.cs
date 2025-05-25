@@ -15,7 +15,10 @@ namespace SchoolManagement.Controllers
         {
             _apiService = new ApiService();
         }
+
+
         [Authorize(Roles = "Admin, Student")]
+        [ResponseCache(Duration = 30)]
         public async Task<IActionResult> Index()
         {
             List<StudentEntity> lstStudents = new List<StudentEntity>();

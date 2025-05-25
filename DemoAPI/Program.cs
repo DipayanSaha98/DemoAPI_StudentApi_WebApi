@@ -2,13 +2,20 @@ using DemoAPI.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Mvc;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddResponseCaching();                                                      // adding service for response caching
+
+builder.Services.AddControllers(options =>
+{
+    options.CacheProfiles.Add("apiCache30", new CacheProfile() { Duration = 30 });           // adding cache profile for 30 seconds
+
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
