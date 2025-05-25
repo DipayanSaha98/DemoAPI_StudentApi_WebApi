@@ -7,3 +7,8 @@ Update all fields ->	PUT	/ ->	Replace the entire resource
 Update few fields  ->	PATCH	 ->	Modify part of the resource
 Delete student	 -> DELETE	 ->	Remove student
 */
+
+
+/*
+ used the http.context class of DotNet to manage login and logout .
+*/

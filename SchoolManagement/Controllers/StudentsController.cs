@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SchoolManagement.Models;
 using SchoolManagement.Services;
@@ -14,10 +15,11 @@ namespace SchoolManagement.Controllers
         {
             _apiService = new ApiService();
         }
+        [Authorize(Roles = "Admin, Student")]
         public async Task<IActionResult> Index()
         {
             List<StudentEntity> lstStudents = new List<StudentEntity>();
-            lstStudents = await _apiService.GetAllStudents();
+            lstStudents = await _apiService.GetAllStudents(HttpContext.Session.GetString("APIToken"));
             return View(lstStudents);
             #region old_code
             //-------------------------------------------OLD------------------------------------------------------
@@ -41,13 +43,15 @@ namespace SchoolManagement.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create()
         { 
             return View();
         }
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateStudent(StudentEntity studentEntity)
         {
-            await _apiService.AddStudent(studentEntity);
+            await _apiService.AddStudent(studentEntity, HttpContext.Session.GetString("APIToken"));
             return RedirectToAction("Index");
             #region old_code
             //using (var _httpClient = new HttpClient())
@@ -66,11 +70,11 @@ namespace SchoolManagement.Controllers
             #endregion
         }
 
-
+        [Authorize(Roles = "Admin , Student")]
         public async Task<IActionResult> Details(int Id)
         {
             StudentEntity studentDetails = new StudentEntity();
-            studentDetails = await _apiService.GetStudentDetailsById(Id);
+            studentDetails = await _apiService.GetStudentDetailsById(Id, HttpContext.Session.GetString("APIToken"));
             return View(studentDetails);
             #region old_code
             //StudentEntity studentDetails = new StudentEntity();
@@ -91,9 +95,10 @@ namespace SchoolManagement.Controllers
             //return View(studentDetails);
             #endregion
         }
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateStudentDetails(int Id, StudentEntity studentEntity)
         {
-            await _apiService.UpdateStudent(Id, studentEntity);
+            await _apiService.UpdateStudent(Id, studentEntity, HttpContext.Session.GetString("APIToken"));
             return RedirectToAction("Index");
             #region old_code
             //using (var _httpClient = new HttpClient())
@@ -113,10 +118,11 @@ namespace SchoolManagement.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int Id)
         {
             StudentEntity studentDetails = new StudentEntity();
-            studentDetails = await _apiService.GetStudentDetailsById(Id);
+            studentDetails = await _apiService.GetStudentDetailsById(Id, HttpContext.Session.GetString("APIToken"));
             return View(studentDetails);
             #region old_code
             //StudentEntity studentDetails = new StudentEntity();
@@ -137,9 +143,10 @@ namespace SchoolManagement.Controllers
             //return View(studentDetails);
             #endregion
         }
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteStudent(int Id)
         {
-            await _apiService.DeleteStudentDetails(Id);
+            await _apiService.DeleteStudentDetails(Id , HttpContext.Session.GetString("APIToken"));
             return RedirectToAction("Index");
             #region old_code
             //using (var _httpClient = new HttpClient())

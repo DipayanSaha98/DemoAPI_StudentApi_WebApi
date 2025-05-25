@@ -16,7 +16,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>                                 // adding service for ApplicationDbContext
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-var key = builder.Configuration.GetValue<string>("ApiSettings:Secret");
+var key = builder.Configuration.GetValue<string>("ApiSettings:Secret");                       // adding service for JWT
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

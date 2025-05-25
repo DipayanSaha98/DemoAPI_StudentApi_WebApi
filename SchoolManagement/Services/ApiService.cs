@@ -16,8 +16,10 @@ namespace SchoolManagement.Services
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public async Task<List<StudentEntity>> GetAllStudents()
+        public async Task<List<StudentEntity>> GetAllStudents(string Token)
         {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);   // this is how need to set the token headers programmatically in the code like used to do in postman .
+
             HttpResponseMessage response = await _httpClient.GetAsync("api/Students");
             response.EnsureSuccessStatusCode();
 
@@ -26,30 +28,38 @@ namespace SchoolManagement.Services
             return APIResponse;
         }
 
-        public async Task AddStudent(StudentEntity student)
+        public async Task AddStudent(StudentEntity student, string Token)
         {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);   // this is how need to set the token headers programmatically in the code like used to do in postman .
+
             HttpResponseMessage response = await _httpClient.PostAsJsonAsync($"api/Students/AddStudent", student);
             response.EnsureSuccessStatusCode();
         }
 
 
-        public async Task<StudentEntity> GetStudentDetailsById(int id)
+        public async Task<StudentEntity> GetStudentDetailsById(int id, string Token)
         {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);   // this is how need to set the token headers programmatically in the code like used to do in postman .
+
             HttpResponseMessage response = await _httpClient.GetAsync($"api/Students/GetStudentsById?id={id}");
             response.EnsureSuccessStatusCode();
             var contents = await response.Content.ReadAsStringAsync();
             var APIResponse = JsonConvert.DeserializeObject<StudentEntity>(contents);
             return APIResponse;
         }
-        public async Task UpdateStudent(int id, StudentEntity student)
+        public async Task UpdateStudent(int id, StudentEntity student, string Token)
         {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);   // this is how need to set the token headers programmatically in the code like used to do in postman .
+
             HttpResponseMessage response = await _httpClient.PostAsJsonAsync($"api/Students/UpdateStudentDetails?id={id}", student);
             response.EnsureSuccessStatusCode();
         }
 
 
-        public async Task DeleteStudentDetails(int id)
+        public async Task DeleteStudentDetails(int id, string Token)
         {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);   // this is how need to set the token headers programmatically in the code like used to do in postman .
+
             HttpResponseMessage response = await _httpClient.PutAsync($"api/Students/DeleteStudent?id={id}",null);
             response.EnsureSuccessStatusCode();
 
