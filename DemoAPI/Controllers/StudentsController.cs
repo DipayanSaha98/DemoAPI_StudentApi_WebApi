@@ -3,6 +3,7 @@ using DemoAPI.Data;
 using DemoAPI.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DemoAPI.Controllers
@@ -25,11 +26,25 @@ namespace DemoAPI.Controllers
         [Authorize]
         //[ResponseCache(Duration = 30)]   
         [ResponseCache(CacheProfileName = "apiCache30")] 
-        public List<StudentEntity> GetAllStudents()                                           // StudentEntity is model class name
+        public IActionResult GetAllStudents(int pagesize , int pagenumber)                                           // StudentEntity is model class name
         {                                                                                     // StudentRegister is database Table name 
             _logger.LogInformation("Fetching All Student List");
-            return _db.StudentRegister.ToList();
+
+            int totalCount = _db.StudentRegister.Count();
+            var studentList = _db.StudentRegister.Skip(pagesize * (pagenumber - 1)).Take(pagesize).ToList();        // Paging 
+            var result = new PageResult<StudentEntity>
+            {
+                items = studentList,
+                CurrentPage = pagenumber,
+                Pagesize = pagesize,
+                TotalCount = totalCount,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)pagenumber)
+            };
+
+
+            return Ok(result);
         }
+
         [HttpGet("GetStudentsById")]
         [Authorize]
         [ResponseCache(CacheProfileName = "apiCache30")]

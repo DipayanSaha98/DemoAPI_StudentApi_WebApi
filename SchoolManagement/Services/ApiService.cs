@@ -16,15 +16,15 @@ namespace SchoolManagement.Services
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public async Task<List<StudentEntity>> GetAllStudents(string Token)
+        public async Task<PageResult<StudentEntity>> GetAllStudents(string Token , int pagesize, int pagenumber)
         {
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);   // this is how need to set the token headers programmatically in the code like used to do in postman .
 
-            HttpResponseMessage response = await _httpClient.GetAsync("api/Students");
+            HttpResponseMessage response = await _httpClient.GetAsync($"api/Students?pagesize={pagesize}&pagenumber={pagenumber}");
             response.EnsureSuccessStatusCode();
 
             var contents = await response.Content.ReadAsStringAsync();
-            var APIResponse = JsonConvert.DeserializeObject<List<StudentEntity>>(contents);
+            var APIResponse = JsonConvert.DeserializeObject<PageResult<StudentEntity>>(contents);
             return APIResponse;
         }
 

@@ -1,4 +1,4 @@
-﻿@model List<StudentEntity>
+﻿@model PageResult<StudentEntity>
 <br/>
 <div class="container p-4 border">
     <div class="row pb-2">
@@ -22,7 +22,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach(var item in Model)
+            @foreach(var item in Model.items)
             {
                 <tr>
                     <td>@item.Id</td>
@@ -33,14 +33,26 @@
                     <td>
                         @* Details will work as an Update  *@
                         <a asp-controller="Students" asp-action="Details" asp-route-Id="@item.Id"   
-                         class="btn btn-primary">Details</a>
+                        class="btn btn-primary">Details</a>
 
                         <a asp-controller="Students" asp-action="Delete" asp-route-Id="@item.Id"
-                           class="btn btn-primary">Delete</a>
+                        class="btn btn-primary">Delete</a>
 
                     </td>
                 </tr>    
             }
         </tbody>
     </table>
+</div>
+
+<div class="pagination">
+    @if (Model.HasPreviousPage)
+    {
+        <a asp-action="Index" asp-route-pageNumber="@((Model.CurrentPage - 1))" class="btn btn-primary">Prev</a>
+    }
+    @* <span>Page @Model.CurrentPage of @Model.TotalPages</span> *@
+    @if (Model.HasNextPage)
+    {
+        <a asp-action="Index" asp-route-pageNumber="@((Model.CurrentPage + 1))" class="btn btn-primary">Next</a>
+    }
 </div>

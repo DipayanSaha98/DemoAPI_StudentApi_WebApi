@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using SchoolManagement.Models;
 using SchoolManagement.Services;
 using System.Net.Http.Headers;
+using Microsoft.Extensions.Configuration;
 
 namespace SchoolManagement.Controllers
 {
@@ -11,18 +12,23 @@ namespace SchoolManagement.Controllers
     {
         private readonly ApiService _apiService;
         //private string baseURL = "http://localhost:5188/";
-        public StudentsController()
+        private readonly IConfiguration _config;
+
+        public StudentsController(IConfiguration config)
         {
             _apiService = new ApiService();
+            _config = config;
         }
 
 
         [Authorize(Roles = "Admin, Student")]
         [ResponseCache(Duration = 30)]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pagenumber=1)
         {
-            List<StudentEntity> lstStudents = new List<StudentEntity>();
-            lstStudents = await _apiService.GetAllStudents(HttpContext.Session.GetString("APIToken"));
+            int pagesize = _config.GetValue<int>("PageSettings:PageSize");
+
+            PageResult<StudentEntity> lstStudents = new PageResult<StudentEntity>();
+            lstStudents = await _apiService.GetAllStudents(HttpContext.Session.GetString("APIToken") , pagesize, pagenumber);
             return View(lstStudents);
             #region old_code
             //-------------------------------------------OLD------------------------------------------------------
